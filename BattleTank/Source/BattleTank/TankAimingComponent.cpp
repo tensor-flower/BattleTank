@@ -19,23 +19,6 @@ void UTankAimingComponent::SetBarrelRef(UStaticMeshComponent * barrelPtr)
 	barrel = barrelPtr;
 }
 
-// Called when the game starts
-void UTankAimingComponent::BeginPlay()
-{
-	Super::BeginPlay();
-	// ...
-	
-}
-
-
-// Called every frame
-void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
-}
-
 void UTankAimingComponent::Log(FVector outHitLocation, float speed)
 {
 	auto barrelPosition = barrel->GetComponentLocation();
@@ -46,11 +29,20 @@ void UTankAimingComponent::Log(FVector outHitLocation, float speed)
 		*outHitLocation.operator/(100.f).ToString(),
 		*barrelPosition.ToString())*/
 	if (UGameplayStatics::SuggestProjectileVelocity(this, tossVelocity, startLocation, outHitLocation, speed, 
-													false, 0, 0, ESuggestProjVelocityTraceOption::DoNotTrace, 
-													FCollisionResponseParams::DefaultResponseParam,
-													TArray<AActor*>(), true)) {
+													false, 0, 0, ESuggestProjVelocityTraceOption::DoNotTrace)) {
 		auto aimDirection = tossVelocity.GetSafeNormal();
-		UE_LOG(LogTemp, Warning, TEXT("%s speed %s"), *GetOwner()->GetName(), *aimDirection.ToString())
+		//UE_LOG(LogTemp, Warning, TEXT("%s speed %s"), *GetOwner()->GetName(), *aimDirection.ToString())
+		MoveBarrel(aimDirection);
 	}
+}
+
+void UTankAimingComponent::MoveBarrel(FVector aimDirection)
+{
+	FRotator barrelRotator = barrel->GetComponentRotation();
+	FRotator aimRotator = aimDirection.Rotation();
+	FRotator diff = aimRotator - barrelRotator;
+	UE_LOG(LogTemp, Warning, TEXT("%s aim rotator %s"), *GetOwner()->GetName(), *aimRotator.ToString())
+	//get barrel rotation, set barrel rotation using desired direction and speed
+	//clamp it
 }
 

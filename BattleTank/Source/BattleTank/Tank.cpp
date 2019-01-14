@@ -41,4 +41,3 @@ void ATank::SetBarrelRef(UStaticMeshComponent *barrelRef)
 {
 	tankAimingComponent->SetBarrelRef(barrelRef);
 }
-
