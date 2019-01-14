@@ -23,8 +23,7 @@ protected:
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	void Log(FVector outHitLocation);
+	void Log(FVector outHitLocation, float speed);
 private:
 	UStaticMeshComponent* barrel = nullptr;
-	
 };

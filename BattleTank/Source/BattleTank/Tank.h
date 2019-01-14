@@ -33,4 +33,5 @@ public:
 	void SetBarrelRef(UStaticMeshComponent* barrelRef);
 private:
 	UStaticMeshComponent* barrelRef;
+	UPROPERTY(Editanywhere, Category=Firing) float launchSpeed = 5000.f;
 };
