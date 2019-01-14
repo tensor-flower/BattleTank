@@ -7,8 +7,10 @@
 void ATankAIController::BeginPlay() {
 	Super::BeginPlay();
 	ATank* tank = GetControlledTank();
-	if (!tank)
+	if (!tank) {
 		UE_LOG(LogTemp, Error, TEXT("pawn not possessed by AI"))
+		GetWorld()->GetFirstPlayerController()->ConsoleCommand("quit");
+	}
 	else
 		UE_LOG(LogTemp, Warning, TEXT("pawn possessed by AI %s"), *tank->GetFName().ToString());
 
@@ -27,4 +29,14 @@ ATank * ATankAIController::GetControlledTank() const
 ATank * ATankAIController::GetPlayerControlledTank() const
 {
 	return Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
+}
+
+void ATankAIController::AimTowards()
+{
+	GetControlledTank()->AimAt(GetPlayerControlledTank()->GetActorLocation());
+}
+
+void ATankAIController::Tick(float DeltaTime)
+{
+	AimTowards();
 }

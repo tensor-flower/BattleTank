@@ -20,5 +20,7 @@ protected:
 private:
 	ATank* GetControlledTank () const;
 	ATank* GetPlayerControlledTank() const;
-	
+	void AimTowards();
+public:
+	virtual void Tick(float DeltaTime) override;
 };
