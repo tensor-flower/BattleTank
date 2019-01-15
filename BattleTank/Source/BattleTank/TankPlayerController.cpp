@@ -54,16 +54,19 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector startLocation, FVec
 	FHitResult hit;	
 
 	//line trace along look direction
-	//FCollisionQueryParams queryParams(FName(TEXT("")), true, this);
+	FCollisionQueryParams queryParams;
+	queryParams.AddIgnoredActor(GetPawn());
 	//FCollisionResponseParams responseParams;
 	if(GetWorld()->LineTraceSingleByChannel(hit, startLocation, endLocation, 
-									ECollisionChannel::ECC_Visibility))
+									ECollisionChannel::ECC_Visibility,
+									queryParams))
 		{
 			outHitLocation = hit.Location;
 			return true;
 		}
 	else {
 		outHitLocation = FVector(0);
+		UE_LOG(LogTemp, Warning, TEXT("player line trace failed"))
 		return false;
 	}
 }

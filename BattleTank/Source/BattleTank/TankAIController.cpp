@@ -1,6 +1,7 @@
 // Guo Wanqi 2019
 
 #include "TankAIController.h"
+#include "Tank.h"
 #include "GameFramework/PlayerController.h"
 #include "Engine/World.h"
 
