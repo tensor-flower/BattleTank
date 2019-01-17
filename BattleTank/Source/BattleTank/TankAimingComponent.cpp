@@ -43,7 +43,7 @@ void UTankAimingComponent::AimComponentAim(FVector outHitLocation, float speed)
 													ESuggestProjVelocityTraceOption::DoNotTrace,
 													responseParams,
 													actorsToIgnore,
-													true);
+													false);
 	//AI always has aimSolution when not trace
 	if(haveAimSolution){
 		FVector aimDirection = tossVelocity.GetSafeNormal();

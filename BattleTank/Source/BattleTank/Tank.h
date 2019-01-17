@@ -39,6 +39,6 @@ public:
 	void Fire();
 private:
 	UTankBarrel* barrel = nullptr; //to spawn projectile
-	UPROPERTY(Editanywhere, Category=Firing) float launchSpeed = 5000.f;
+	UPROPERTY(Editanywhere, Category=Firing) float launchSpeed = 4000.f;
 	UPROPERTY(Editanywhere, Category = Setup) TSubclassOf<AProjectile> projectileBP;
 };

@@ -49,8 +49,9 @@ void ATank::Fire()
 {
 	//UE_LOG(LogTemp, Warning, TEXT("fire method called by BP"))
 	if (!barrel) return;
-	//UClass* AProjectile;
 	FVector spawnLocation = barrel->GetSocketLocation(FName("Projectile"));
-	FRotator spawnRotator = spawnLocation.Rotation();
-	GetWorld()->SpawnActor<AProjectile>(projectileBP, spawnLocation, spawnRotator);
+	FRotator spawnRotator = barrel->GetSocketRotation(FName("Projectile"));
+	//instantiate projectile
+	auto projectile = GetWorld()->SpawnActor<AProjectile>(projectileBP, spawnLocation, spawnRotator);
+	projectile->LaunchProjectile(launchSpeed);
 }
