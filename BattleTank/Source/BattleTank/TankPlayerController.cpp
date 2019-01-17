@@ -1,6 +1,7 @@
 // Guo Wanqi 2019
 
 #include "TankPlayerController.h"
+#include "Tank.h"
 #include "Engine/World.h"
 
 ATank* ATankPlayerController::GetControlledTank() const {

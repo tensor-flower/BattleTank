@@ -32,8 +32,9 @@ void UTankAimingComponent::Log(FVector outHitLocation, float speed)
 	/*UE_LOG(LogTemp, Warning, TEXT("%s aiming at %s from %s"), *GetOwner()->GetName(),
 		*outHitLocation.operator/(100.f).ToString(),
 		*barrelPosition.operator/(100.f).ToString())*/
-	bool haveAimSolution = UGameplayStatics::SuggestProjectileVelocity(this, tossVelocity, startLocation, outHitLocation, speed, 
-													false, 0, 0, ESuggestProjVelocityTraceOption::DoNotTrace,
+	bool haveAimSolution = UGameplayStatics::SuggestProjectileVelocity(this, tossVelocity, startLocation, outHitLocation, speed,
+													false, 0, 0,
+													ESuggestProjVelocityTraceOption::DoNotTrace,
 													responseParams,
 													actorsToIgnore,
 													true);
@@ -58,6 +59,6 @@ void UTankAimingComponent::MoveBarrel(FVector aimDirection)
 	//UE_LOG(LogTemp, Warning, TEXT("%s aim rotator %s"), *GetOwner()->GetName(), *aimRotator.ToString())
 	//get barrel rotation, set barrel rotation using desired direction and speed
 	//clamp it
-	barrel->Elevate(1.f);
+	barrel->Elevate(diff.Pitch);
 }
 
