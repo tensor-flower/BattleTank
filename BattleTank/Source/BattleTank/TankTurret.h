@@ -18,5 +18,5 @@ class BATTLETANK_API UTankTurret : public UStaticMeshComponent
 public:
 	void TurretYaw(float);
 private:
-	UPROPERTY(Editanywhere, Category = Setup) float maxDegreesPerSecond = 30.f;
+	UPROPERTY(EditDefaultsOnly, Category = Setup) float maxDegreesPerSecond = 30.f;
 };

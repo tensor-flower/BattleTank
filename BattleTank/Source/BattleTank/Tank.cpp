@@ -47,11 +47,14 @@ void ATank::SetTurretRef(UTankTurret *turretRef)
 
 void ATank::Fire()
 {
-	//UE_LOG(LogTemp, Warning, TEXT("fire method called by BP"))
-	if (!barrel) return;
-	FVector spawnLocation = barrel->GetSocketLocation(FName("Projectile"));
-	FRotator spawnRotator = barrel->GetSocketRotation(FName("Projectile"));
-	//instantiate projectile
-	auto projectile = GetWorld()->SpawnActor<AProjectile>(projectileBP, spawnLocation, spawnRotator);
-	projectile->LaunchProjectile(launchSpeed);
+	bool isReloaded = (FPlatformTime::Seconds() - lastFireTime) > cooldownTimeInSeconds;
+	if (barrel && isReloaded) {
+		FVector spawnLocation = barrel->GetSocketLocation(FName("Projectile"));
+		FRotator spawnRotator = barrel->GetSocketRotation(FName("Projectile"));
+		//instantiate projectile
+		auto projectile = GetWorld()->SpawnActor<AProjectile>(projectileBP, spawnLocation, spawnRotator);
+		projectile->LaunchProjectile(launchSpeed);
+
+		lastFireTime = FPlatformTime::Seconds();
+	}
 }
