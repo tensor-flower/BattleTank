@@ -7,6 +7,7 @@
 #include "Tank.generated.h"
 
 class UTankBarrel;
+class UTankTurret;
 class UTankAimingComponent;
 UCLASS()
 class BATTLETANK_API ATank : public APawn
@@ -30,8 +31,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	//void SetBarrelRef(UStaticMeshComponent* barrelRef);
 	void SetBarrelRef(UTankBarrel* barrelRef);
+
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	void SetTurretRef(UTankTurret* turretRef);
 private:
 	//UStaticMeshComponent* barrelRef;
 	UTankBarrel* barrelRef;
+	UTankTurret* turretRef;
 	UPROPERTY(Editanywhere, Category=Firing) float launchSpeed = 5000.f;
 };

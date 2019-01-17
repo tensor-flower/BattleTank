@@ -27,11 +27,16 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ATank::AimAt(FVector hitLocation)
 {
-	tankAimingComponent->Log(hitLocation, launchSpeed);
+	tankAimingComponent->AimComponentAim(hitLocation, launchSpeed);
 	//UE_LOG(LogTemp, Warning, TEXT("%s aiming at %s"), *GetName(), *hitLocation.operator/(100.f).ToString())
 }
 
 void ATank::SetBarrelRef(UTankBarrel *barrelRef)
 {
 	tankAimingComponent->SetBarrelRef(barrelRef);
+}
+
+void ATank::SetTurretRef(UTankTurret *turretRef)
+{
+	tankAimingComponent->SetTurretRef(turretRef);
 }

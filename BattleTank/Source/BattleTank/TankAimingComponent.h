@@ -7,6 +7,7 @@
 #include "TankAimingComponent.generated.h"
 
 class UTankBarrel;
+class UTankTurret;
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BATTLETANK_API UTankAimingComponent : public UActorComponent
 {
@@ -16,12 +17,15 @@ public:
 	// Sets default values for this component's properties
 	UTankAimingComponent();
 	void SetBarrelRef(UTankBarrel*);
+	void SetTurretRef(UTankTurret*);
 protected:
 
 
 public:	
-	void Log(FVector outHitLocation, float speed);
+	void AimComponentAim(FVector outHitLocation, float speed);
 private:
 	UTankBarrel* barrel = nullptr;
-	void MoveBarrel(FVector);
+	UTankTurret* turret = nullptr;
+	void MoveBarrel(FRotator);
+	void MoveTurret(FRotator);
 };

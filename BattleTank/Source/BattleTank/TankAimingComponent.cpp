@@ -4,6 +4,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "TankBarrel.h"
+#include "TankTurret.h"
 
 // Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent()
@@ -20,10 +21,15 @@ void UTankAimingComponent::SetBarrelRef(UTankBarrel * barrelPtr)
 	barrel = barrelPtr;
 }
 
-void UTankAimingComponent::Log(FVector outHitLocation, float speed)
+void UTankAimingComponent::SetTurretRef(UTankTurret *turretPtr)
+{
+	turret = turretPtr;
+}
+
+void UTankAimingComponent::AimComponentAim(FVector outHitLocation, float speed)
 {
 	//auto barrelPosition = barrel->GetComponentLocation();
-	if (!barrel) return;
+	if (!barrel || !turret) return;
 	
 	FVector tossVelocity;
 	FVector startLocation = barrel->GetSocketLocation(FName("Projectile"));
@@ -40,25 +46,40 @@ void UTankAimingComponent::Log(FVector outHitLocation, float speed)
 													true);
 	//AI always has aimSolution when not trace
 	if(haveAimSolution){
-		auto aimDirection = tossVelocity.GetSafeNormal();
+		FVector aimDirection = tossVelocity.GetSafeNormal();
 		//UE_LOG(LogTemp, Warning, TEXT("%s speed %s"), *GetOwner()->GetName(), *aimDirection.ToString())
-		UE_LOG(LogTemp, Warning, TEXT("%s has aim solution"), *GetOwner()->GetFName().ToString())	
-		MoveBarrel(aimDirection);
-
+		//UE_LOG(LogTemp, Warning, TEXT("%s has aim solution"), *GetOwner()->GetFName().ToString())	
+		FRotator aimRotator = aimDirection.Rotation();
+		MoveBarrel(aimRotator);
+		//MoveTurret(aimRotator);
 	}
 	else {
-		UE_LOG(LogTemp, Warning, TEXT("%s no aim solution"), *GetOwner()->GetFName().ToString())
+		//UE_LOG(LogTemp, Warning, TEXT("%s no aim solution"), *GetOwner()->GetFName().ToString())
 	}
 }
 
-void UTankAimingComponent::MoveBarrel(FVector aimDirection)
+void UTankAimingComponent::MoveBarrel(FRotator aimDirection)
 {
 	FRotator barrelRotator = barrel->GetComponentRotation();
-	FRotator aimRotator = aimDirection.Rotation();
+	FRotator aimRotator = aimDirection;
 	FRotator diff = aimRotator - barrelRotator;
 	//UE_LOG(LogTemp, Warning, TEXT("%s aim rotator %s"), *GetOwner()->GetName(), *aimRotator.ToString())
 	//get barrel rotation, set barrel rotation using desired direction and speed
 	//clamp it
 	barrel->Elevate(diff.Pitch);
+	if(FMath::Abs(diff.Yaw)<180)
+		turret->TurretYaw(diff.Yaw);
+	else
+		turret->TurretYaw(-diff.Yaw);
+	//UE_LOG(LogTemp, Warning, TEXT("%f yaw"), diff.Yaw)
+	//make use of the fact that barrel has no yaw
+}
+
+void UTankAimingComponent::MoveTurret(FRotator aimDirection)
+{
+	FRotator turretRotator = turret->GetComponentRotation();
+	FRotator aimRotator = aimDirection;
+	FRotator diff = aimRotator - turretRotator;
+	turret->TurretYaw(diff.Yaw);
 }
 
