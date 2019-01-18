@@ -5,6 +5,7 @@
 #include "Engine/World.h"
 #include "TankBarrel.h"
 #include "Projectile.h"
+//#include "TankMovementComponent.h"
 
 // Sets default values
 ATank::ATank()
@@ -53,7 +54,7 @@ void ATank::Fire()
 		FRotator spawnRotator = barrel->GetSocketRotation(FName("Projectile"));
 		//instantiate projectile
 		auto projectile = GetWorld()->SpawnActor<AProjectile>(projectileBP, spawnLocation, spawnRotator);
-		projectile->LaunchProjectile(launchSpeed);
+		//projectile->LaunchProjectile(launchSpeed);
 
 		lastFireTime = FPlatformTime::Seconds();
 	}
