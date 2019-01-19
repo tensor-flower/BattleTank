@@ -28,6 +28,9 @@ void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, boo
 	FVector tankForward = GetOwner()->GetActorForwardVector().GetSafeNormal();
 	FVector moveVelocityNormal = MoveVelocity.GetSafeNormal();
 	float angle = FVector::DotProduct(tankForward, moveVelocityNormal);
+	FVector turnVector = FVector::CrossProduct(tankForward, moveVelocityNormal);
 	//UE_LOG(LogTemp, Warning, TEXT("%s move velocity %s"), *name.ToString(), *MoveVelocity.GetSafeNormal().ToString())
+	//UE_LOG(LogTemp, Warning, TEXT("angle %f turn %f"), angle, turnVector.Z)
 	IntendMoveForward(angle);
+	IntendTurnRight(turnVector.Z);
 }

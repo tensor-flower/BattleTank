@@ -16,7 +16,7 @@ class BATTLETANK_API UTankTrack : public UStaticMeshComponent
 	
 public:
 	//TODO find out why commenting line below break turnRight function
-	UFUNCTION(BlueprintCallable, Category = Input)
+	UFUNCTION(BlueprintCallable, Category = "Input")
 	void SetThrottle(float throttle);
 	
 	UPROPERTY(EditDefaultsOnly) float maxDrivingForce = 40000000.f; //assume 40T tank

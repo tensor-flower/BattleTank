@@ -32,18 +32,18 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	void AimAt(FVector);
 
-	UFUNCTION(BlueprintCallable, Category = Setup)
+	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void SetBarrelRef(UTankBarrel* barrelRef);
 
-	UFUNCTION(BlueprintCallable, Category = Setup)
+	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void SetTurretRef(UTankTurret* turretRef);
 
 	UFUNCTION(BlueprintCallable)
 	void Fire();
 private:
 	UTankBarrel* barrel = nullptr; //to spawn projectile
-	UPROPERTY(EditDefaultsOnly, Category=Firing) float launchSpeed = 4000.f;
-	UPROPERTY(EditDefaultsOnly, Category = Setup) TSubclassOf<AProjectile> projectileBP;
-	UPROPERTY(EditDefaultsOnly, Category = Firing) float cooldownTimeInSeconds = 3.f;
+	UPROPERTY(EditDefaultsOnly, Category = "Firing") float launchSpeed = 4000.f;
+	UPROPERTY(EditDefaultsOnly, Category = "Setup") TSubclassOf<AProjectile> projectileBP;
+	UPROPERTY(EditDefaultsOnly, Category = "Firing") float cooldownTimeInSeconds = 3.f;
 	double lastFireTime = 0;
 };

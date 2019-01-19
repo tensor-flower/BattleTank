@@ -67,7 +67,7 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector startLocation, FVec
 		}
 	else {
 		outHitLocation = FVector(0);
-		UE_LOG(LogTemp, Warning, TEXT("player line trace failed"))
+		//UE_LOG(LogTemp, Warning, TEXT("player line trace failed"))
 		return false;
 	}
 }
