@@ -15,6 +15,7 @@ class BATTLETANK_API UTankTrack : public UStaticMeshComponent
 	GENERATED_BODY()
 	
 public:
+	//TODO find out why commenting line below break turnRight function
 	UFUNCTION(BlueprintCallable, Category = Input)
 	void SetThrottle(float throttle);
 	
