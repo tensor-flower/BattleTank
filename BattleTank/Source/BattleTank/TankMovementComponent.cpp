@@ -24,6 +24,10 @@ void UTankMovementComponent::Initialise(UTankTrack* leftTrackToSet, UTankTrack* 
 
 void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, bool bForceMaxSpeed)
 {
-	FName name = GetOwner()->GetFName();
-	UE_LOG(LogTemp, Warning, TEXT("%s move velocity %s"), *name.ToString(), *MoveVelocity.ToString())
+	//FName name = GetOwner()->GetFName();
+	FVector tankForward = GetOwner()->GetActorForwardVector().GetSafeNormal();
+	FVector moveVelocityNormal = MoveVelocity.GetSafeNormal();
+	float angle = FVector::DotProduct(tankForward, moveVelocityNormal);
+	//UE_LOG(LogTemp, Warning, TEXT("%s move velocity %s"), *name.ToString(), *MoveVelocity.GetSafeNormal().ToString())
+	IntendMoveForward(angle);
 }
