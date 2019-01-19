@@ -51,7 +51,7 @@ void UTankAimingComponent::AimComponentAim(FVector outHitLocation, float speed)
 		//UE_LOG(LogTemp, Warning, TEXT("%s has aim solution"), *GetOwner()->GetFName().ToString())	
 		FRotator aimRotator = aimDirection.Rotation();
 		MoveBarrel(aimRotator);
-		//MoveTurret(aimRotator);
+		//MoveTurret(aimRotator); //Don't call, already implemented in MoveBarrel
 	}
 	else {
 		//UE_LOG(LogTemp, Warning, TEXT("%s no aim solution"), *GetOwner()->GetFName().ToString())
