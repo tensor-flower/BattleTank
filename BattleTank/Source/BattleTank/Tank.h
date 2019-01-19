@@ -32,12 +32,6 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	void AimAt(FVector);
 
-	UFUNCTION(BlueprintCallable, Category = "Setup")
-	void SetBarrelRef(UTankBarrel* barrelRef);
-
-	UFUNCTION(BlueprintCallable, Category = "Setup")
-	void SetTurretRef(UTankTurret* turretRef);
-
 	UFUNCTION(BlueprintCallable)
 	void Fire();
 private:

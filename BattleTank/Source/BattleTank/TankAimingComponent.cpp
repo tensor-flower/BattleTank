@@ -15,17 +15,6 @@ UTankAimingComponent::UTankAimingComponent()
 	// ...
 }
 
-
-void UTankAimingComponent::SetBarrelRef(UTankBarrel * barrelPtr)
-{
-	barrel = barrelPtr;
-}
-
-void UTankAimingComponent::SetTurretRef(UTankTurret *turretPtr)
-{
-	turret = turretPtr;
-}
-
 void UTankAimingComponent::AimComponentAim(FVector outHitLocation, float speed)
 {
 	//auto barrelPosition = barrel->GetComponentLocation();
@@ -56,6 +45,12 @@ void UTankAimingComponent::AimComponentAim(FVector outHitLocation, float speed)
 	else {
 		//UE_LOG(LogTemp, Warning, TEXT("%s no aim solution"), *GetOwner()->GetFName().ToString())
 	}
+}
+
+void UTankAimingComponent::Initialise(UTankBarrel * barrelToSet, UTankTurret * turretToSet)
+{
+	barrel = barrelToSet;
+	turret = turretToSet;
 }
 
 void UTankAimingComponent::MoveBarrel(FRotator aimDirection)
