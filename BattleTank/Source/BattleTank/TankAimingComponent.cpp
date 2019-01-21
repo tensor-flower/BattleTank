@@ -29,7 +29,7 @@ void UTankAimingComponent::SetTurretRef(UTankTurret *turretPtr)
 void UTankAimingComponent::AimComponentAim(FVector outHitLocation, float speed)
 {
 	//auto barrelPosition = barrel->GetComponentLocation();
-	if (!barrel || !turret) return;
+	if (!ensure(barrel) || !ensure(turret)) return;
 	
 	FVector tossVelocity;
 	FVector startLocation = barrel->GetSocketLocation(FName("Projectile"));

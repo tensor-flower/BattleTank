@@ -2,23 +2,17 @@
 
 #include "TankPlayerController.h"
 #include "Tank.h"
+#include "TankAimingComponent.h"
 #include "Engine/World.h"
 
 ATank* ATankPlayerController::GetControlledTank() const {
 	APawn* tank = GetPawn();
-	if (!tank)
-	{
-		UE_LOG(LogTemp, Error, TEXT("pawn not possessed by player"))
-		return nullptr;
-	}
-	FName pawnName = tank->GetFName();
-	//UE_LOG(LogTemp, Warning, TEXT("%s possessed by player"), *pawnName.ToString())
 	return Cast<ATank>(tank);
 }
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	if (!GetControlledTank()) { return; }
+	if (!ensure(GetControlledTank())) { return; }
 	FVector outHitLocation;
 	if (GetSightRayHitLocation(outHitLocation)) {
 		//UE_LOG(LogTemp, Warning, TEXT("%s"), *outHitLocation.operator/(100.f).ToString())
@@ -75,6 +69,12 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector startLocation, FVec
 void ATankPlayerController::BeginPlay() {
 	Super::BeginPlay();
 	ATank* tank = GetControlledTank();
+	auto aimComponent = tank->FindComponentByClass<UTankAimingComponent>();
+	if(ensure(aimComponent))	FoundAimingComponent(aimComponent);
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("player controller cannot find aim component"))
+	}
 }
 
 void ATankPlayerController::Tick(float DeltaTime)

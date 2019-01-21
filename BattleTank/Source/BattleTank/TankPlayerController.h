@@ -10,6 +10,7 @@
  * 
  */
 class ATank;
+class UTankAimingComponent;
 UCLASS()
 class BATTLETANK_API ATankPlayerController : public APlayerController
 {
@@ -26,6 +27,8 @@ private:
 
 protected:
 	virtual void BeginPlay() override;
+	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
+	void FoundAimingComponent(UTankAimingComponent* aimCompRef);
 public:
 	virtual void Tick(float DeltaTime) override;
 };
