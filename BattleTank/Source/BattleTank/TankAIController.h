@@ -9,7 +9,7 @@
 /**
  * 
  */
-
+class UTankAimingComponent;
 UCLASS()
 class BATTLETANK_API ATankAIController : public AAIController
 {
@@ -19,6 +19,7 @@ protected:
 	
 private:
 	float stoppingDistance = 2000.f;
+	UTankAimingComponent* aimComponent = nullptr;
 public:
 	virtual void Tick(float DeltaTime) override;
 };

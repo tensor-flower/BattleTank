@@ -15,18 +15,13 @@ UTankAimingComponent::UTankAimingComponent()
 	// ...
 }
 
-
-void UTankAimingComponent::SetBarrelRef(UTankBarrel * barrelPtr)
+void UTankAimingComponent::Initialise(UTankBarrel * barrelToSet, UTankTurret * turretToSet)
 {
-	barrel = barrelPtr;
+	barrel = barrelToSet;
+	turret = turretToSet;
 }
 
-void UTankAimingComponent::SetTurretRef(UTankTurret *turretPtr)
-{
-	turret = turretPtr;
-}
-
-void UTankAimingComponent::AimComponentAim(FVector outHitLocation, float speed)
+void UTankAimingComponent::AimComponentAim(FVector outHitLocation)
 {
 	//auto barrelPosition = barrel->GetComponentLocation();
 	if (!ensure(barrel) || !ensure(turret)) return;
@@ -38,7 +33,8 @@ void UTankAimingComponent::AimComponentAim(FVector outHitLocation, float speed)
 	/*UE_LOG(LogTemp, Warning, TEXT("%s aiming at %s from %s"), *GetOwner()->GetName(),
 		*outHitLocation.operator/(100.f).ToString(),
 		*barrelPosition.operator/(100.f).ToString())*/
-	bool haveAimSolution = UGameplayStatics::SuggestProjectileVelocity(this, tossVelocity, startLocation, outHitLocation, speed,
+	bool haveAimSolution = UGameplayStatics::SuggestProjectileVelocity(this, tossVelocity, 
+													startLocation, outHitLocation, speed,
 													false, 0, 0,
 													ESuggestProjVelocityTraceOption::DoNotTrace,
 													responseParams,

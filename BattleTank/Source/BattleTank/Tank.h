@@ -8,8 +8,6 @@
 
 class UTankBarrel;
 class UTankTurret;
-class UTankAimingComponent;
-//class UTankMovementComponent;
 class AProjectile;
 UCLASS()
 class BATTLETANK_API ATank : public APawn
@@ -23,20 +21,10 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	UPROPERTY(BlueprintReadOnly)UTankAimingComponent* tankAimingComponent = nullptr;
-	//UPROPERTY(EditDefaultsOnly, BlueprintReadOnly) 
-	//UTankMovementComponent* tankMovementComponent = nullptr;
 
 public:	
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	void AimAt(FVector);
-
-	UFUNCTION(BlueprintCallable, Category = "Setup")
-	void SetBarrelRef(UTankBarrel* barrelRef);
-
-	UFUNCTION(BlueprintCallable, Category = "Setup")
-	void SetTurretRef(UTankTurret* turretRef);
 
 	UFUNCTION(BlueprintCallable)
 	void Fire();

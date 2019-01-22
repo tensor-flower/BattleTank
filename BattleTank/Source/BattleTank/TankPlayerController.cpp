@@ -1,22 +1,16 @@
 // Guo Wanqi 2019
 
 #include "TankPlayerController.h"
-#include "Tank.h"
 #include "TankAimingComponent.h"
 #include "Engine/World.h"
 
-ATank* ATankPlayerController::GetControlledTank() const {
-	APawn* tank = GetPawn();
-	return Cast<ATank>(tank);
-}
-
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	if (!ensure(GetControlledTank())) { return; }
 	FVector outHitLocation;
 	if (GetSightRayHitLocation(outHitLocation)) {
 		//UE_LOG(LogTemp, Warning, TEXT("%s"), *outHitLocation.operator/(100.f).ToString())
-		GetControlledTank()->AimAt(outHitLocation);
+		if (!ensure(aimComponent))	return;
+		aimComponent->AimComponentAim(outHitLocation);
 	}
 	else {
 		//UE_LOG(LogTemp, Warning, TEXT("%s"), *outHitLocation.operator/(100.f).ToString())
@@ -68,12 +62,12 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector startLocation, FVec
 
 void ATankPlayerController::BeginPlay() {
 	Super::BeginPlay();
-	ATank* tank = GetControlledTank();
-	auto aimComponent = tank->FindComponentByClass<UTankAimingComponent>();
-	if(ensure(aimComponent))	FoundAimingComponent(aimComponent);
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("player controller cannot find aim component"))
+	//cannot rely on tank any more
+	auto tank = GetPawn();
+	aimComponent = tank->FindComponentByClass<UTankAimingComponent>();
+	if (ensure(aimComponent)) { 
+		FoundAimingComponent(aimComponent); 
+		UE_LOG(LogTemp, Warning, TEXT("player controller found aim component at begin play"))
 	}
 }
 

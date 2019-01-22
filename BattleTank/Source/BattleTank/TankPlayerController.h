@@ -24,7 +24,7 @@ private:
 	UPROPERTY(Editanywhere) float crosshairYLocation = 0.33333f;
 	UPROPERTY(Editanywhere) int32 lineTraceRange = 1000000;
 	bool GetLookVectorHitLocation(FVector, FVector, FVector&) const;
-
+	UTankAimingComponent* aimComponent = nullptr;
 protected:
 	virtual void BeginPlay() override;
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
