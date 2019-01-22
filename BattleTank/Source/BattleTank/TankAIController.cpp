@@ -19,5 +19,5 @@ void ATankAIController::Tick(float DeltaTime)
 	MoveToActor(playerTank, stoppingDistance);
 	if (!ensure(aimComponent))	return;
 	aimComponent->AimComponentAim(playerTank->GetActorLocation());
-	//tank->Fire();
+	aimComponent->Fire();
 }
