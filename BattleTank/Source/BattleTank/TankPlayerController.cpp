@@ -67,7 +67,6 @@ void ATankPlayerController::BeginPlay() {
 	aimComponent = tank->FindComponentByClass<UTankAimingComponent>();
 	if (ensure(aimComponent)) { 
 		FoundAimingComponent(aimComponent); 
-		UE_LOG(LogTemp, Warning, TEXT("player controller found aim component at begin play"))
 	}
 }
 

@@ -17,6 +17,28 @@ UTankAimingComponent::UTankAimingComponent()
 	// ...
 }
 
+//assign firing status Enum
+//TODO add state where line trace fail
+void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
+{
+	if (GetWorld()->GetTimeSeconds() - lastFireTime < cooldownTimeInSeconds) {
+		firingStatus = EFiringStatus::Reloading;
+	}
+	else if (IsBarrelMoving()) {
+		firingStatus = EFiringStatus::Aiming;
+	}
+	else
+	{
+		firingStatus = EFiringStatus::Locked;
+	}
+}
+
+void UTankAimingComponent::BeginPlay() {
+	Super::BeginPlay();
+	lastFireTime = GetWorld()->GetTimeSeconds();
+}
+
+//set up barrel and turret pointers
 void UTankAimingComponent::Initialise(UTankBarrel * barrelToSet, UTankTurret * turretToSet)
 {
 	barrel = barrelToSet;
@@ -25,7 +47,6 @@ void UTankAimingComponent::Initialise(UTankBarrel * barrelToSet, UTankTurret * t
 
 void UTankAimingComponent::AimComponentAim(FVector outHitLocation)
 {
-	//auto barrelPosition = barrel->GetComponentLocation();
 	if (!ensure(barrel) || !ensure(turret)) return;
 	
 	FVector tossVelocity;
@@ -42,29 +63,28 @@ void UTankAimingComponent::AimComponentAim(FVector outHitLocation)
 													responseParams,
 													actorsToIgnore,
 													false);
-	//AI always has aimSolution when not trace
+
 	if(haveAimSolution){
-		FVector aimDirection = tossVelocity.GetSafeNormal();
-		//UE_LOG(LogTemp, Warning, TEXT("%s speed %s"), *GetOwner()->GetName(), *aimDirection.ToString())
-		//UE_LOG(LogTemp, Warning, TEXT("%s has aim solution"), *GetOwner()->GetFName().ToString())	
+		aimDirection = tossVelocity.GetSafeNormal();
+		UE_LOG(LogTemp, Warning, TEXT("%s aim direction %s"), *GetOwner()->GetName(), *aimDirection.ToString())
 		FRotator aimRotator = aimDirection.Rotation();
 		MoveBarrel(aimRotator);
-		//MoveTurret(aimRotator);
 	}
 	else {
 		//UE_LOG(LogTemp, Warning, TEXT("%s no aim solution"), *GetOwner()->GetFName().ToString())
 	}
 }
 
-void UTankAimingComponent::MoveBarrel(FRotator aimDirection)
+void UTankAimingComponent::MoveBarrel(FRotator aimRotator)
 {
+	if (!ensure(barrel))	return;
 	FRotator barrelRotator = barrel->GetComponentRotation();
-	FRotator aimRotator = aimDirection;
 	FRotator diff = aimRotator - barrelRotator;
 	//UE_LOG(LogTemp, Warning, TEXT("%s aim rotator %s"), *GetOwner()->GetName(), *aimRotator.ToString())
 	//get barrel rotation, set barrel rotation using desired direction and speed
 	//clamp it
 	barrel->Elevate(diff.Pitch);
+	if (!ensure(turret))	return;
 	if(FMath::Abs(diff.Yaw)<180)
 		turret->TurretYaw(diff.Yaw);
 	else
@@ -73,10 +93,10 @@ void UTankAimingComponent::MoveBarrel(FRotator aimDirection)
 	//make use of the fact that barrel has no yaw
 }
 
-void UTankAimingComponent::MoveTurret(FRotator aimDirection)
+//useless function
+void UTankAimingComponent::MoveTurret(FRotator aimRotator)
 {
 	FRotator turretRotator = turret->GetComponentRotation();
-	FRotator aimRotator = aimDirection;
 	FRotator diff = aimRotator - turretRotator;
 	turret->TurretYaw(diff.Yaw);
 }
@@ -84,7 +104,7 @@ void UTankAimingComponent::MoveTurret(FRotator aimDirection)
 void UTankAimingComponent::Fire()
 {
 	if (!ensure(barrel && projectileBP))	return;
-	bool isReloaded = (FPlatformTime::Seconds() - lastFireTime) > cooldownTimeInSeconds;
+	bool isReloaded = (GetWorld()->GetTimeSeconds() - lastFireTime) > cooldownTimeInSeconds;
 	if (isReloaded) {
 		FVector spawnLocation = barrel->GetSocketLocation(FName("Projectile"));
 		FRotator spawnRotator = barrel->GetSocketRotation(FName("Projectile"));
@@ -92,6 +112,13 @@ void UTankAimingComponent::Fire()
 		auto projectile = GetWorld()->SpawnActor<AProjectile>(projectileBP, spawnLocation, spawnRotator);
 		projectile->LaunchProjectile(speed);
 
-		lastFireTime = FPlatformTime::Seconds();
+		lastFireTime = GetWorld()->GetTimeSeconds();
 	}
+}
+
+bool UTankAimingComponent::IsBarrelMoving() {
+	if (!ensure(barrel))	return false;
+	//UE_LOG(LogTemp, Warning, TEXT("%s aim direction %s"), *GetOwner()->GetName(), *aimDirection.ToString())
+	float tolerance = 0.1f;
+	return !aimDirection.Equals(barrel->GetForwardVector(), tolerance);
 }
