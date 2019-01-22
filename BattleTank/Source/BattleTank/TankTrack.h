@@ -20,4 +20,7 @@ public:
 	void SetThrottle(float throttle);
 	
 	UPROPERTY(EditDefaultsOnly) float maxDrivingForce = 40000000.f; //assume 40T tank
+private:
+	UTankTrack();
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 };

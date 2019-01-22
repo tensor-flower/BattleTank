@@ -64,6 +64,7 @@ void ATankPlayerController::BeginPlay() {
 	Super::BeginPlay();
 	//cannot rely on tank any more
 	auto tank = GetPawn();
+	if (!tank)	return;
 	aimComponent = tank->FindComponentByClass<UTankAimingComponent>();
 	if (ensure(aimComponent)) { 
 		FoundAimingComponent(aimComponent); 

@@ -66,7 +66,7 @@ void UTankAimingComponent::AimComponentAim(FVector outHitLocation)
 
 	if(haveAimSolution){
 		aimDirection = tossVelocity.GetSafeNormal();
-		UE_LOG(LogTemp, Warning, TEXT("%s aim direction %s"), *GetOwner()->GetName(), *aimDirection.ToString())
+		//UE_LOG(LogTemp, Warning, TEXT("%s aim direction %s"), *GetOwner()->GetName(), *aimDirection.ToString())
 		FRotator aimRotator = aimDirection.Rotation();
 		MoveBarrel(aimRotator);
 	}
